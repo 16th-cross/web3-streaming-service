@@ -9,6 +9,8 @@ description	varchar(200),
 txn_hash varchar(100),
 nft_cid	varchar(100),
 video_cid varchar(100),
+trailer_nft_cid	varchar(100),
+trailer_video_cid varchar(100),
 wallet_address varchar(100),
 video_duration integer,
 primary key(id)

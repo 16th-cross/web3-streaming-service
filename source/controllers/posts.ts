@@ -7,6 +7,8 @@ interface VideoMetadata {
     description: String,
     txn_hash: String,
     nft_cid: String,
+    trailer_nft_cid: String,
+    trailer_video_cid: String,
     video_cid: String,
     wallet_address: String,
     video_duration: Number
@@ -18,6 +20,8 @@ const addVideo = async (req: Request, res: Response, next: NextFunction) => {
     let txn_hash: String = req.body.txn_hash;
     let nft_cid: String = req.body.nft_cid;
     let video_cid: String = req.body.video_cid;
+    let trailer_nft_cid: String = req.body.trailer_nft_cid;
+    let trailer_video_cid: String = req.body.trailer_video_cid;
     let wallet_address: String = req.body.wallet_address;
     let video_duration: Number = req.body.video_duration;
 
@@ -26,18 +30,22 @@ const addVideo = async (req: Request, res: Response, next: NextFunction) => {
     + ",\n txn_hash: " + txn_hash
     + ",\n nft_cid: " + nft_cid
     + ",\n video_cid: " + video_cid
+    + ",\n trailer_nft_cid: " + trailer_nft_cid
+    + ",\n trailer_video_cid: " + trailer_video_cid
     + ",\n wallet_address: " + wallet_address
     + ",\n video_duration: " + video_duration
     );
 
     if(name == null || description == null || txn_hash == null || nft_cid == null ||
-        video_cid == null || wallet_address == null || video_duration == null) {
+        video_cid == null || wallet_address == null || video_duration == null || trailer_video_cid == null
+        || trailer_nft_cid == null) {
             return res.status(400).json({
                 message: "[BAD REQUEST]:  Mandatory param(s) missing"
             });
     };
 
-    let result = await dao.putVideoData(name, description, txn_hash, nft_cid, video_cid, wallet_address, video_duration);
+    let result = await dao.putVideoData(name, description, txn_hash, nft_cid, video_cid, wallet_address, 
+        video_duration, trailer_nft_cid, trailer_video_cid);
     return res.status(200).json({
         message: "Video uploaded successfully!"
     });
@@ -57,6 +65,8 @@ const getAll = async (req: Request, res: Response, next: NextFunction) => {
             video_cid: result[i].video_cid,
             wallet_address: result[i].wallet_address,
             video_duration: result[i].video_duration,
+            trailer_nft_cid: result[i].trailer_nft_cid,
+            trailer_video_cid: result[i].trailer_video_cid
         })
     }
 
