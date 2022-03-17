@@ -6,6 +6,7 @@ interface VideoMetadata {
     name: String,
     description: String,
     txn_hash: String,
+    image_cid: String,
     nft_cid: String,
     trailer_nft_cid: String,
     trailer_video_cid: String,
@@ -18,6 +19,7 @@ const addVideo = async (req: Request, res: Response, next: NextFunction) => {
     let name: Number = req.body.name;
     let description: String = req.body.description;
     let txn_hash: String = req.body.txn_hash;
+    let image_cid: String = req.body.image_cid;
     let nft_cid: String = req.body.nft_cid;
     let video_cid: String = req.body.video_cid;
     let trailer_nft_cid: String = req.body.trailer_nft_cid;
@@ -28,6 +30,7 @@ const addVideo = async (req: Request, res: Response, next: NextFunction) => {
     console.log("Request Body: {\n name: " + name 
     + ",\n description: " + description
     + ",\n txn_hash: " + txn_hash
+    + ",\n image_cid: " + image_cid
     + ",\n nft_cid: " + nft_cid
     + ",\n video_cid: " + video_cid
     + ",\n trailer_nft_cid: " + trailer_nft_cid
@@ -45,7 +48,7 @@ const addVideo = async (req: Request, res: Response, next: NextFunction) => {
     };
 
     let result = await dao.putVideoData(name, description, txn_hash, nft_cid, video_cid, wallet_address, 
-        video_duration, trailer_nft_cid, trailer_video_cid);
+        video_duration, trailer_nft_cid, trailer_video_cid, image_cid);
     return res.status(200).json({
         message: "Video uploaded successfully!"
     });
@@ -66,7 +69,8 @@ const getAll = async (req: Request, res: Response, next: NextFunction) => {
             wallet_address: result[i].wallet_address,
             video_duration: result[i].video_duration,
             trailer_nft_cid: result[i].trailer_nft_cid,
-            trailer_video_cid: result[i].trailer_video_cid
+            trailer_video_cid: result[i].trailer_video_cid,
+            image_cid: result[i].image_cid
         })
     }
 
